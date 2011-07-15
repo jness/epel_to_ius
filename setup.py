@@ -18,6 +18,7 @@ Sync packages from EPEL to RPMdev""",
       include_package_data=True,
       zip_safe=False,
       install_requires=[
+        'argparse',
         'simplejson',
         'configobj',
         'monkeyfarm.interface',

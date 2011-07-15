@@ -67,10 +67,11 @@ def main():
         for line in content.readlines():
 
             # regex to find all SRPM matching our package name
-            m = match('.*>((%s-[\w.]*-[\w.]*).el[\d].src.rpm).*' % p, line)
+            m = match('.*>((%s-[\w.]*-[\w.]*)[\.el6]?\.src.rpm).*' % p, line)
             if m:
                 full_p = m.group(1)
                 pkg_name = m.group(2)
+                pkg_name = pkg_name.replace('.el6', '')
 
                 # if we have this version lets continue to the next package
                 if full_p in cache:

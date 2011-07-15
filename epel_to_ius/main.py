@@ -92,31 +92,18 @@ def main():
                 store_message(p, 'working out of %s' % tmp)
                 os.chdir(tmp) 
 
-                # all check passed thus far, we can not start our git shell commands
+                # all check passed thus far, we can not start our bzr shell commands
                 # we now need to worry about success and failures for commands.
                 proceed = True
 
                 if proceed: 
-                    store_message(p, 'initializing empty git')
-                    init = run(['git', 'init'])
-                    if init.returncode > 0:
-                        proceed = False
-                        store_message(p, init.communicate())
-                
-                if proceed: 
-                    store_message(p, 'setting git remote')
-                    rm = 'lp:~ius-coredev/ius/mysql55%s' % p.lower()
-                    remote = run(['git', 'remote', 'add', 'origin', rm])
+                    store_message(p, 'pulling bzr repo')
+                    rm = 'lp:~ius-coredev/ius/%s' % p.lower()
+                    remote = run(['bzr', 'branch', rm])
+                    os.chdir(p)
                     if remote.returncode > 0:
                         proceed = False
                         store_message(p, remote.communicate())
-        
-                if proceed:
-                    # if a pull fails its most likely a new repo
-                    if not args.forcegit:
-                        store_message(p, 'attempting to pull from repo')
-                        pull = run(['git', 'pull', rm, 'master'])
-
 
                 if proceed:
                     # download the SRPM to current directory
@@ -138,19 +125,19 @@ def main():
                         os.remove(full_p)
 
                 if proceed: 
-                    store_message(p, 'adding all files to git')
-                    add = run(['git', 'add', '.'])
+                    store_message(p, 'adding all files to bzr')
+                    add = run(['bzr', 'add', '.'])
                     if add.returncode > 0:
                         proceed = False
                         store_message(p, add.communicate())
 
                 if proceed: 
                     store_message(p, 'commmiting changes to git')
-                    commit = run(['git', 'commit', '-m', '[commit] %s' % full_p])
+                    commit = run(['bzr', 'commit', '-m', '[commit] %s' % full_p])
                     if commit.returncode > 0:
                         proceed = False
                         store_message(p, commit.communicate())
-
+                
                 if proceed: 
                     store_message(p, 'pushing changes to git')
                     if args.forcegit:

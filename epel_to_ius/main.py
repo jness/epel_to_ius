@@ -10,7 +10,7 @@ from urllib2 import urlopen, HTTPError
 from config import get_config
 
 from commands import run
-from launchpadcode import repos
+from launchpadcode import lp_repos
 from emailer import email
 
 def store_message(p, message):
@@ -50,7 +50,7 @@ def main():
             cache = []
 
     # get a list of all repos in launchpad
-    repos = repos()
+    repos = lp_repos()
 
     # a dict to hold all messages, we will use this to email later
     global pkgs

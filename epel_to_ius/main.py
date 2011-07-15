@@ -80,7 +80,7 @@ def main():
 
                 # currently repos need to be created manually in LP
                 # if a repo does not exist we will be forced to skip
-                reponame = 'rpmdev:' + p
+                reponame = p
                 print '\n== %s ==' % p
                 if reponame not in repos:
                     store_message(p, '%s does not exist in launchpad' % reponame)
